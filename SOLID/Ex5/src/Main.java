@@ -3,8 +3,10 @@ public class Main {
         System.out.println("=== Export Demo ===");
 
         ExportRequest req = new ExportRequest("Weekly Report", SampleData.longBody());
-        Exporter pdf = new PdfExporter();
-        Exporter csv = new CsvExporter();
+        
+        // Use composition to separate format encoding from delivery constraints
+        Exporter pdf = new SizeLimitedExporter(new PdfExporter(), 20, "PDF cannot handle content > 20 chars");
+        Exporter csv = new SanitizingExporter(new CsvExporter());
         Exporter json = new JsonExporter();
 
         System.out.println("PDF: " + safe(pdf, req));
