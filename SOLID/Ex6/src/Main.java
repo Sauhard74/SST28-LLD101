@@ -11,10 +11,10 @@ public class Main {
 
         email.send(n);
         sms.send(n);
-        try {
+        if (wa.canSend(n)) {
             wa.send(n);
-        } catch (RuntimeException ex) {
-            System.out.println("WA ERROR: " + ex.getMessage());
+        } else {
+            System.out.println("WA ERROR: phone must start with + and country code");
             audit.add("WA failed");
         }
 
